@@ -58,6 +58,15 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
 	Page<Owner> findByLastName(@Param("lastName") String lastName, Pageable pageable);
 
 	/**
+	 * Firstname으로 찾기
+	 * @param firstName 이름으로 찾기
+	 * @return 매칭되는 Owner 컬렉션을 페이징해서 반환
+	 */
+	@Query("SELECT DISTINCT owner FROM Owner owner left join owner.pets WHERE owner.firstName LIKE %:firstName% ")
+	@Transactional(readOnly = true)
+	Page<Owner> findByFirstName(@Param("firstName") String firstName, Pageable pageable);
+
+	/**
 	 * Retrieve an {@link Owner} from the data store by id.
 	 * @param id the id to search for
 	 * @return the {@link Owner} if found
